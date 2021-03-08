@@ -48,10 +48,10 @@ class MiCilindro extends THREE.Object3D {
     // Las tres cifras indican un valor mínimo, un máximo y el incremento
     // El método listen() nos permite que si se cambia el valor de la variable en código, el deslizador de la interfaz se actualice.
     //                                     Min, Max, Incr
-    folder.add (this.guiControls, 'radio_sup', 1.0, 5.0, 0.1).name ('Radio Inferior : ').listen().onChange(function (value){
-        that.cylinder.geometry = new THREE.CylinderGeometry(value, that.guiControls.radio_inf, that.guiControls.resolucion);
+    folder.add (this.guiControls, 'radio_sup', 1.0, 5.0, 0.1).name ('Radio Superior : ').listen().onChange(function (value){
+        that.cylinder.geometry = new THREE.CylinderGeometry(value, that.guiControls.radio_inf, that.guiControls.altura, that.guiControls.resolucion);
     });
-    folder.add (this.guiControls, 'radio_inf', 1.0, 5.0, 0.1).name ('Radio Superior : ').listen().onChange(function (value){
+    folder.add (this.guiControls, 'radio_inf', 1.0, 5.0, 0.1).name ('Radio Inferior : ').listen().onChange(function (value){
         that.cylinder.geometry = new THREE.CylinderGeometry(that.guiControls.radio_sup, value, that.guiControls.altura, that.guiControls.resolucion);
     });
     folder.add (this.guiControls, 'altura', 1.0, 5.0, 0.1).name ('Altura : ').listen().onChange(function (value){

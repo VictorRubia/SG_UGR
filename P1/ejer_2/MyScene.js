@@ -10,6 +10,9 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 import { MiCubo } from './MyBox.js'
 import { MiCono } from './MyCone.js'
 import { MiCilindro } from './MyCylinder.js'
+import { MiEsfera } from './MySphere.js'
+import { MiToro } from './MyTorus.js'
+import { MiIcosaedro } from './MyIcosahedron.js'
 
 
 /// La clase fachada del modelo
@@ -54,12 +57,19 @@ class MyScene extends THREE.Scene {
     this.ejescubo = new THREE.AxesHelper (5);
     this.ejescono = new THREE.AxesHelper (5);
     this.ejescilindro = new THREE.AxesHelper (5);
+    this.ejesesfera = new THREE.AxesHelper (5);
+    this.ejestoro = new THREE.AxesHelper (5);
+    this.ejesico = new THREE.AxesHelper (5);
 
 
     // Creamos los modelos
     this.model = new MiCubo(this.gui, "Controles de la Caja", this.material);
     this.cono = new MiCono(this.gui, "Controles del Cono", this.material);
     this.cilindro = new MiCilindro(this.gui, "Controles del Cilindro", this.material);
+    this.esfera = new MiEsfera(this.gui, "Controles de la Esfera", this.material);
+    this.toro = new MiToro(this.gui, "Controles del Toro", this.material);
+    this.icosaedro = new MiIcosaedro(this.gui, "Controles del Icosaedro", this.material);
+
     
     // Añadimos la caja a los ejes
     this.ejescubo.add(this.model);
@@ -70,12 +80,24 @@ class MyScene extends THREE.Scene {
 
     this.ejescilindro.add(this.cilindro);
     this.ejescilindro.position.set (0, 10, 0);
+
+    this.ejesesfera.add(this.esfera);
+    this.ejesesfera.position.set (-10, 0, 0);
+    
+    this.ejestoro.add(this.toro);
+    this.ejestoro.position.set (10, 0, 0);
+    
+    this.ejesico.add(this.icosaedro);
+    this.ejesico.position.set (-10, -10, 0);
     
 
     // Añadimos a la escena los distintos ejes junto con sus modelos
     this.add (this.ejescubo);
     this.add (this.ejescono);
     this.add(this.ejescilindro);
+    this.add(this.ejesesfera);
+    this.add(this.ejestoro);
+    this.add(this.ejesico);
 
   }
   
@@ -231,6 +253,9 @@ class MyScene extends THREE.Scene {
     this.model.update();
     this.cono.update();
     this.cilindro.update();
+    this.esfera.update();
+    this.toro.update();
+    this.icosaedro.update();
     
     this.material.flatShading = this.guiControls.sombreado;
     this.material.needsUpdate = true;
