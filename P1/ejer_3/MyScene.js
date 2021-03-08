@@ -89,7 +89,7 @@ class MyScene extends THREE.Scene {
     this.peon.position.set(0, 2, 0);
 
     // Creamos el segundo peon
-    this.ejesotropeon = new THREE.AxesHelper();
+    this.ejesotropeon = new THREE.AxesHelper(0);
 
     this.otropeon = new MyObjRevolution(this.gui, "Parametros 2", this.points, this.material);
     this.otropeon.latheObject.geometry = new THREE.LatheGeometry(this.points, 3, 0, 2*Math.PI);
@@ -186,7 +186,6 @@ class MyScene extends THREE.Scene {
     folder.add (this.guiControls, 'axisOnOff').name ('Mostrar ejes : ');
 
     var folder2 = gui.addFolder ('Parametros Revolucion');
-    folder2.add (this.guiControls, 'reset').name ('[ Restaurar ]').listen()
     
     folder2.add (this.guiControls, 'resolucion', 3.0, 15.0, 1).name ('Resolución : ').listen().onChange(function (value){
         that.peon.latheObject.geometry = new THREE.LatheGeometry(that.points, value, 0, that.guiControls.angulo);
@@ -196,6 +195,8 @@ class MyScene extends THREE.Scene {
     folder2.add (this.guiControls, 'angulo', 0.0, 2*Math.PI, 0.1).name ('Ángulo : ').listen().onChange(function (value){
         that.peon.latheObject.geometry = new THREE.LatheGeometry(that.points, that.guiControls.resolucion, 0, value);
     });
+
+    folder2.add (this.guiControls, 'reset').name ('[ Restaurar ]').listen()
     
     return gui;
   }
