@@ -801,4 +801,3 @@ class ThreeBSP {
   } 
 
 export { ThreeBSP };
-

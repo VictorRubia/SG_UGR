@@ -1,13 +1,14 @@
  
 // Clases de la biblioteca
 
-import * as THREE from '../libs/three.module.js'
-import { GUI } from '../libs/dat.gui.module.js'
-import { TrackballControls } from '../libs/TrackballControls.js'
+import * as THREE from '../../libs/three.module.js'
+import { GUI } from '../../libs/dat.gui.module.js'
+import { TrackballControls } from '../../libs/TrackballControls.js'
+import * as TWEEN from '../../libs/tween.esm.js'
 
 // Clases de mi proyecto
 
-import { MyObjRevolution } from './MyObjRevolution.js'
+import { Flexo } from './flexo.js'
 
 
 /// La clase fachada del modelo
@@ -28,78 +29,28 @@ class MyScene extends THREE.Scene {
     this.gui = this.createGUI ();
     
     // Construimos los distinos elementos que tendremos en la escena
-    
     // Todo elemento que se desee sea tenido en cuenta en el renderizado de la escena debe pertenecer a esta. Bien como hijo de la escena (this en esta clase) o como hijo de un elemento que ya esté en la escena.
     // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
     this.createLights ();
+
+    //  Creamos un material común para todos los objetos
+    this.material = new THREE.MeshPhongMaterial({color: 0x00FF00 });
+
     
     // Tendremos una cámara con un control de movimiento con el ratón
     this.createCamera ();
+    // this.createGround();
     
     // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
     this.axis = new THREE.AxesHelper (5);
     this.add (this.axis);
     
-    
     // Por último creamos el modelo.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
 
-    // Crear material común para todos los objetos.
-    this.material = new THREE.MeshNormalMaterial();
-    this.material.side = THREE.DoubleSide;
-
-
-    // Definimos los puntos para hacer el perfil del peón.
-    this.points = [];
-
-    //  Construido de abajo hacia arriba
-    this.points.push (new THREE.Vector3(0.0,-1.4,0));
-    this.points.push (new THREE.Vector3(1.0,-1.4,0));
-    this.points.push (new THREE.Vector3(1.0,-1.1,0));
-    this.points.push (new THREE.Vector3(0.5,-0.7,0));
-    this.points.push (new THREE.Vector3(0.4,-0.4,0));
-    this.points.push (new THREE.Vector3(0.4,0.5,0));
-    this.points.push (new THREE.Vector3(0.5,0.6,0));
-    this.points.push (new THREE.Vector3(0.3,0.6,0));
-    this.points.push (new THREE.Vector3(0.5,0.8,0));
-    this.points.push (new THREE.Vector3(0.55,1.0,0));
-    this.points.push (new THREE.Vector3(0.5,1.2,0));
-    this.points.push (new THREE.Vector3(0.3,1.4,0));
-    this.points.push (new THREE.Vector3(0.0,1.4,0));
-
-    // Creamos la linea
-    this.lineGeometry = new THREE.Geometry();
-    this.lineGeometry.vertices = this.points;
-    this.lineMat = new THREE.LineBasicMaterial({color: 0x0000ff});
-    this.line = new THREE.Line (this.lineGeometry, this.lineMat);
-
-    // Ejes de la linea
-    this.ejeslinea = new THREE.AxesHelper(5);
-    this.ejeslinea.add(this.line);  //  Añado la linea al eje
-
-    // Cambiamos la forma y posicion
-    this.ejeslinea.position.set(-10, 0, 0);
-    this.line.position.set(0, 2, 0);
-    this.add(this.ejeslinea); //  Añado el eje a la escena
-
-    // Creamos el peon
-    this.peon = new MyObjRevolution(this.gui, "Parametros 1", this.points, this.material);
-
-    this.peon.position.set(0, 2, 0);
-
-    // Creamos el segundo peon
-    this.ejesotropeon = new THREE.AxesHelper(0);
-
-    this.otropeon = new MyObjRevolution(this.gui, "Parametros 2", this.points, this.material);
-    this.otropeon.latheObject.geometry = new THREE.LatheGeometry(this.points, 3, 0, 2*Math.PI);
-
-    this.otropeon.position.set(0, 2, 0);
-    this.ejesotropeon.add(this.otropeon);
-    this.ejesotropeon.position.set(10, 0, 0);
-
-    this.add(this.peon);
-    this.add(this.ejesotropeon);
+    this.model = new Flexo(this.gui, "Holiwi", this.material);
+    this.add(this.model);
 
   }
   
@@ -134,7 +85,7 @@ class MyScene extends THREE.Scene {
     var geometryGround = new THREE.BoxGeometry (50,0.2,50);
     
     // El material se hará con una textura de madera
-    var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
+    var texture = new THREE.TextureLoader().load('../../imgs/wood.jpg');
     var materialGround = new THREE.MeshPhongMaterial ({map: texture});
     
     // Ya se puede construir el Mesh
@@ -155,48 +106,19 @@ class MyScene extends THREE.Scene {
     // La escena le va a añadir sus propios controles. 
     // Se definen mediante una   new function()
     // En este caso la intensidad de la luz y si se muestran o no los ejes
-    var that = this;
-
     this.guiControls = new function() {
       // En el contexto de una función   this   alude a la función
       this.lightIntensity = 0.5;
       this.axisOnOff = true;
-      this.sombreado = true;
-
-      this.resolucion = 3.0;
-      this.angulo = 1.0;
-
-      this.reset = function () {
-          this.resolucion = 3.0;
-          this.angulo = 1.0;
-          that.peon.latheObject.geometry = new THREE.LatheGeometry(that.points, this.resolucion, 0, that.guiControls.angulo);
-          that.otropeon.latheObject.geometry = new THREE.LatheGeometry(that.points, this.resolucion, 0, 2*Math.PI);
-      }
     }
 
     // Se crea una sección para los controles de esta clase
     var folder = gui.addFolder ('Luz y Ejes');
-    
-    gui.add (this.guiControls, 'sombreado').name ('Sombreado : ');
-    
+        
     // Se le añade un control para la intensidad de la luz
     folder.add (this.guiControls, 'lightIntensity', 0, 1, 0.1).name('Intensidad de la Luz : ');
-    
     // Y otro para mostrar u ocultar los ejes
     folder.add (this.guiControls, 'axisOnOff').name ('Mostrar ejes : ');
-
-    var folder2 = gui.addFolder ('Parametros Revolucion');
-    
-    folder2.add (this.guiControls, 'resolucion', 3.0, 15.0, 1).name ('Resolución : ').listen().onChange(function (value){
-        that.peon.latheObject.geometry = new THREE.LatheGeometry(that.points, value, 0, that.guiControls.angulo);
-        that.otropeon.latheObject.geometry = new THREE.LatheGeometry(that.points, value, 0, 2*Math.PI);
-    });
-    
-    folder2.add (this.guiControls, 'angulo', 0.0, 2*Math.PI, 0.1).name ('Ángulo : ').listen().onChange(function (value){
-        that.peon.latheObject.geometry = new THREE.LatheGeometry(that.points, that.guiControls.resolucion, 0, value);
-    });
-
-    folder2.add (this.guiControls, 'reset').name ('[ Restaurar ]').listen()
     
     return gui;
   }
@@ -274,20 +196,19 @@ class MyScene extends THREE.Scene {
     this.axis.visible = this.guiControls.axisOnOff;
     
     // Se actualiza la posición de la cámara según su controlador
-    this.cameraControl.update();
+    this.cameraControl.update();    
     
     // Se actualiza el resto del modelo
-    this.peon.update();
-    this.otropeon.update();
-    
-    this.material.flatShading = this.guiControls.sombreado;
+    this.model.update();
+    this.material.flatShading = true;
     this.material.needsUpdate = true;
+    TWEEN.update()
     
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
+
   }
 }
-
 
 /// La función   main
 $(function () {

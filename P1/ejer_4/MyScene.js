@@ -275,7 +275,6 @@ class MyScene extends THREE.Scene {
     this.figuras.rotation.z += alpha;
 
     // Que corrija la rotacion de las figuras
-
     this.corazon_.rotation.z -= alpha;
     this.diamante_.rotation.z -= alpha;
     this.pica_.rotation.z -= alpha;
