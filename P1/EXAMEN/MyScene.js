@@ -8,7 +8,7 @@ import * as TWEEN from '../libs/tween.esm.js'
 
 // Clases de mi proyecto
 
-import { Elipse } from './BolaElipse.js'
+import { Comecocos } from './Comecocos.js'
 
 /// La clase fachada del modelo
 /**
@@ -47,7 +47,7 @@ class MyScene extends THREE.Scene {
     // Por último creamos el modelo.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-    this.model = new Elipse(this.gui, material);
+    this.model = new Comecocos(this.gui, this.material);
     this.add(this.model);
 
   }
@@ -91,7 +91,7 @@ class MyScene extends THREE.Scene {
     
     // Todas las figuras se crean centradas en el origen.
     // El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
-    ground.position.y = -0.1;
+    ground.position.y = -3;
     
     // Que no se nos olvide añadirlo a la escena, que en este caso es  this
     this.add (ground);

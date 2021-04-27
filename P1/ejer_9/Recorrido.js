@@ -10,6 +10,8 @@ class Recorrido extends THREE.Object3D{
 
         this.createGUI(gui);
 
+
+
         this.spline = new THREE.CatmullRomCurve3([
             new THREE.Vector3(0,0,0),
             new THREE.Vector3(3,0,3),
@@ -33,8 +35,8 @@ class Recorrido extends THREE.Object3D{
         naveGeom.rotateX(Math.PI/2);
         this.nave = new THREE.Mesh(naveGeom, new THREE.MeshNormalMaterial());
 
-        this.add(this.nave);
-        this.add(visibleSpline);
+        // this.add(this.nave);
+        // this.add(visibleSpline);
         this.animarNave();
     }
 
