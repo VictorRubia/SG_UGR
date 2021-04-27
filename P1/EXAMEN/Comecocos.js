@@ -75,7 +75,11 @@ class Comecocos extends THREE.Object3D{
         this.geometryLine.vertices = this.spline.getPoints(100);
         var material = new THREE.LineBasicMaterial({color: 0xFF0000});
         var visibleSpline = new THREE.Line (this.geometryLine, material);
+        this.ParteArriba.scale.x = 0.4;
+        this.ParteArriba.scale.y = 0.4;
+        this.ParteArriba.scale.z = 0.4;
         
+
         this.add(visibleSpline);
         this.animarComecocos();
         this.add(this.ParteArriba);
@@ -115,12 +119,12 @@ class Comecocos extends THREE.Object3D{
     }
 
     animarComecocos(){
-        var origen2 = {p:0.45}; // Desde la mitad del recorrido hasta el final (8 segs)
+        var origen2 = {p:0.45}; // Desde la mitad del recorrido hasta el final (6 segs)
         var destino2 = {p:1.0};
         var that = this;
 
         var animacion2 = new TWEEN.Tween(origen2)
-        .to(destino2, 6000) // ( 8 segundos)
+        .to(destino2, 6000) // ( 6 segundos)
         .easing(TWEEN.Easing.Quadratic.InOut)
         .onUpdate(function(){
             var posicion = that.spline.getPointAt(origen2.p);
