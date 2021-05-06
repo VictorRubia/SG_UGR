@@ -126,7 +126,7 @@ class MyPhysiScene extends Physijs.Scene {
     this.camera.position.set (30, 5, 10);
     // Y hacia dónde mira
     var look = new THREE.Vector3 (0,0,0);
-    this.camera.lookAt(this.position);
+    this.camera.lookAt(this.prota);
     this.prota.box_container.add (this.camera);
     
     // Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
