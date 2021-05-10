@@ -69,46 +69,6 @@ class MyPhysiScene extends Physijs.Scene {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  onKeyDown(event) {
-    var key = event.which || event.keyCode;
-    switch (key) {
-      case 72: // La tecla de la  H
-        window.alert("Movimiento controlado por WASD.\nApunta con el raton y dispara con el click izquierdo");
-        break;
-      case 65: // Cursor a la izquierda
-        this.prota.left = true;
-        break;
-      case 87: // Cursor arriba
-        this.prota.forward = true;
-        break;
-      case 68: // Cursor a la derecha
-        this.prota.right = true;
-        break;
-      case 83: // Cursor abajo
-        this.prota.backward = true;
-        break;
-    }
-  }
-
-  onKeyUp(event) {
-    var key = event.which || event.keyCode;
-    switch (key) {
-      case 65: // Cursor a la izquierda
-        this.prota.left = false;
-        break;
-      case 87: // Cursor arriba
-        this.prota.forward = false;
-        break;
-      case 68: // Cursor a la derecha
-        this.prota.right = false;
-        break;
-      case 83: // Cursor abajo
-        this.prota.backward = false;
-        break;
-    }
-  }
-
-
   createCamera() {
     // Para crear una cámara le indicamos
     //   El ángulo del campo de visión en grados sexagesimales
@@ -125,9 +85,10 @@ class MyPhysiScene extends Physijs.Scene {
     // También se indica dónde se coloca
     this.camera.position.set (30, 5, 10);
     // Y hacia dónde mira
-    var look = new THREE.Vector3 (0,0,0);
-    this.camera.lookAt(this.prota);
-    this.prota.box_container.add (this.camera);
+    // var look = new THREE.Vector3 (0,0,0);
+    console.log(this.prota.coche);
+    this.camera.lookAt(this.prota.coche.mesh.position);
+    // this.prota.coche.add (this.camera);
     
     // Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
     this.cameraControl = new THREE.TrackballControls (this.camera, this.renderer.domElement);
@@ -143,9 +104,6 @@ class MyPhysiScene extends Physijs.Scene {
 		// this.camera.position.set( 30, 5, 10 );
 		// this.camera.lookAt( this.position );
     // this.prota.box_container.add( this.camera );
-
-    // //Añadimos la cámara al personaje, para que lo siga en todo momento
-    // this.prota.box_container.add(this.camera);
 
   }
 
@@ -212,6 +170,17 @@ class MyPhysiScene extends Physijs.Scene {
   getCamera() {
     // En principio se devuelve la única cámara que tenemos
     // Si hubiera varias cámaras, este método decidiría qué cámara devuelve cada vez que es consultado
+    this.camera.lookAt(this.prota.coche.mesh.position);
+    this.camera.position.copy( this.prota.coche.mesh.position ).add( new THREE.Vector3( 40, 25, 40 ) );
+    
+    var relativeCameraOffset = new THREE.Vector3(0,15,-35);
+    var cameraOffset = relativeCameraOffset.applyMatrix4(this.prota.coche.mesh.matrixWorld);
+    this.camera.position.x = cameraOffset.x;
+    this.camera.position.y = cameraOffset.y;
+    this.camera.position.z = cameraOffset.z;
+    this.camera.lookAt(this.prota.coche.mesh.position);
+    
+    
     return this.camera;
   }
 
@@ -268,9 +237,60 @@ $(function () {
   window.addEventListener("resize", () => scene.onWindowResize());
 
   // Se añaden listeners para el teclado y el ratón
-  window.addEventListener("keydown", () => scene.onKeyDown(event));
-  window.addEventListener("keyup", () => scene.onKeyUp(event));
-  window.addEventListener("mousedown", () => scene.disparar(event));
+  // window.addEventListener("keydown", () => scene.onKeyDown(event));
+  // window.addEventListener("keyup", () => scene.onKeyUp(event));
+  // window.addEventListener("mousedown", () => scene.disparar(event));
+
+  
+  window.addEventListener('keydown', function( ev ) {
+    switch ( ev.keyCode ) {
+      case 65: // left
+        scene.prota.input.direction = 1;
+        break;
+
+      case 87: // forward
+        scene.prota.input.power = true;
+        break;
+        
+        case 68: // right
+        scene.prota.input.direction = -1;
+        break;
+        
+        case 32: // brake
+        scene.prota.input.power = false;
+        break;
+        
+        case 83: // back
+        scene.prota.input.power = true;
+        scene.prota.input.rear = true;
+        break;
+      }
+    });
+    
+    window.addEventListener('keyup', function( ev ) {
+      switch ( ev.keyCode ) {
+        case 65: // left
+        scene.prota.input.direction = null;
+        break;
+        
+        case 87: // forward
+        scene.prota.input.power = null;
+        break;
+        
+        case 68: // right
+        scene.prota.input.direction = null;
+        break;
+        
+        case 32: // brake
+        scene.prota.input.power = null;
+        break;
+        
+        case 83: // back
+        scene.prota.input.power = null;
+        scene.prota.input.rear = null;
+        break;
+    }
+  });
 
   // Finalmente, realizamos el primer renderizado.
   scene.update();

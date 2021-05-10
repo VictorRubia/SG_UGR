@@ -49,11 +49,12 @@ class Prota {
     //Añadir la caja a la escena
     scene.add(this.box_container);
 
-    //Variables que controlan el movimiento
-    this.forward = false;
-    this.backward = false;
-    this.right = false;
-    this.left = false;
+    this.input = {
+      power: null,
+      direction: null,
+      steering: 0,
+      rear: null
+    };
 
     //Variable que controla la animacion
     this.animando = false;
@@ -144,21 +145,10 @@ class Prota {
     this.cabina.position.y = 1;
     
     this.meshProta.add(this.ruedaDelante);
-    // this.meshProta.add(this.ruedaAtras);
-    // this.meshProta.add(this.carroceria);
-    // this.meshProta.add(this.cabina);
-    // this.meshProta.add(this.ventanaFrontal);
-    // this.meshProta.add(this.ventanaTrasera);
-    // this.meshProta.add(this.ventanaDcha1);
-    // this.meshProta.add(this.ventanaDcha2);
-    // this.meshProta.add(this.ventanaIzqda1);
-    // this.meshProta.add(this.ventanaIzqda2);
     
     
     this.meshProta.position.set(0, -10, 0);
     
-    // carroceriaPhy.add(this.ruedaDelante);
-    // carroceriaPhy.add(this.ruedaAtras);
     carroceriaPhy.add(this.ventanaFrontal);
     carroceriaPhy.add(this.ventanaTrasera);
     carroceriaPhy.add(this.ventanaDcha1);
@@ -200,12 +190,6 @@ class Prota {
         i < 2 ? false : true
       );
     }	
-    
-    this.input = {
-      power: null,
-      direction: null,
-      steering: 0
-    };
 
       this.ruedaDelante = this.fabricaRuedas();
       this.ruedaDelante.position.y = 6.5;
@@ -269,7 +253,6 @@ class Prota {
   fabricaRuedas(){
     var ruedaGeom = new THREE.CylinderGeometry( 0.5, 0.5, 1, 8 );
     ruedaGeom.rotateX(Math.PI / 2);
-    // var ruedaGeom = new THREE.CircleGeometry( 10, 5 );
     var materialRueda = new THREE.MeshLambertMaterial({ color: 0x333333 });
 
     var rueda = new THREE.Mesh(ruedaGeom, materialRueda);
@@ -278,91 +261,33 @@ class Prota {
 
   //Metodo que actualiza
   update() {
-    //Control del movimiento del personaje
-
     if ( this.input && this.coche ) {
       if ( this.input.direction !== null ) {
         this.input.steering += this.input.direction / 50;
         if ( this.input.steering < -.6 ) this.input.steering = -.6;
         if ( this.input.steering > .6 ) this.input.steering = .6;
       }
+      else{
+        this.input.steering *=0.9;
+      }
       this.coche.setSteering( this.input.steering, 0 );
       this.coche.setSteering( this.input.steering, 1 );
 
       if ( this.input.power === true ) {
-        this.coche.applyEngineForce( 30 );
+        if(this.input.rear === true){
+          this.coche.applyEngineForce(-15);
+        }
+        else{
+          this.coche.applyEngineForce( 30 );
+        }
       } else if ( this.input.power === false ) {
-        this.coche.setBrake( 20, 2 );
-        this.coche.setBrake( 20, 3 );
-      } else {
+        this.coche.setBrake( 0.9, 2 );
+        this.coche.setBrake( 0.9, 3 );
+      } 
+      else {
         this.coche.applyEngineForce( 0 );
       }
     }
-
-    //Hacia delante
-    if (this.forward) {
-      var pos = this.box_container.position;
-      this.input.power = true;
-      // pos['x'] -= 0.1 * this.vel_powerup;
-      this.box_container.__dirtyPosition = true;
-      if (this.meshProta.rotation['y'] < 0) {
-        this.meshProta.rotation['y'] += 0.1
-      }
-      if (this.meshProta.rotation['y'] > 0) {
-        this.meshProta.rotation['y'] -= 0.1
-      }
-    }
-    //Hacia detras
-    if (this.backward) {
-      var pos = this.box_container.position;
-      this.input.power = false;
-      // pos['x'] += 0.1 * this.vel_powerup;
-      this.box_container.__dirtyPosition = true;
-      if (this.meshProta.rotation['y'] < 0) {
-        this.meshProta.rotation['y'] += 0.1
-      }
-      if (this.meshProta.rotation['y'] > 0) {
-        this.meshProta.rotation['y'] -= 0.1
-      }
-    }
-    //Hacia la izquierda
-    if (this.right) {
-      var pos = this.box_container.position;
-      this.input.direction = -1;
-      // pos['z'] -= 0.1 * this.vel_powerup;
-      this.box_container.__dirtyPosition = true;
-      if (this.meshProta.rotation['y'] > -Math.PI / 2) {
-        this.meshProta.rotation['y'] -= 0.1
-      }
-
-    }
-    //Hacia la derecha
-    else if (this.left) {
-      var pos = this.box_container.position;
-      this.input.direction = 1;
-      // pos['z'] += 0.1 * this.vel_powerup;
-      this.box_container.__dirtyPosition = true;
-      if (this.meshProta.rotation['y'] < Math.PI / 2) {
-        this.meshProta.rotation['y'] += 0.1
-      }
-    }
-
-    // //Hacia delante
-    // if (!this.forward) {
-    //   this.input.power = false;
-    // }
-    // //Hacia detras
-    // if (!this.backward) {
-    //   this.input.power = false;
-    // }
-    // //Hacia la izquierda
-    // if (!this.right) {
-    //   this.input.direction = null;
-    // }
-    // //Hacia la derecha
-    // else if (!this.left) {
-    //   this.input.direction = null;
-    // }
 
     //Evitar que el personaje se desestabilice
     this.box_container.rotation['x'] = 0;
@@ -376,10 +301,6 @@ class Prota {
 
     var tiempoActual = Date.now();
     var segundosTranscurridos = (tiempoActual - this.tiempoAnterior)/1000;
-
-    // this.carroceria.material.color.set(this.guiControls.color);
-    // this.ruedaDelante.rotation.z -= 0.08;
-    // this.ruedaAtras.rotation.z -= 0.08;
 
     this.tiempoAnterior = tiempoActual;
 
@@ -396,34 +317,4 @@ class Prota {
     // }
 
   }
-}
-function getCarFrontTexture() {
-  const canvas = document.createElement("canvas");
-  canvas.width = 64;
-  canvas.height = 32;
-  const context = canvas.getContext("2d");
-
-  context.fillStyle = "#ffffff";
-  context.fillRect(0, 0, 64, 32);
-
-  context.fillStyle = "#666666";
-  context.fillRect(8, 8, 48, 24);
-
-  return new THREE.CanvasTexture(canvas);
-}
-
-function getCarSideTexture() {
-  const canvas = document.createElement("canvas");
-  canvas.width = 128;
-  canvas.height = 32;
-  const context = canvas.getContext("2d");
-
-  context.fillStyle = "#ffffff";
-  context.fillRect(0, 0, 128, 32);
-
-  context.fillStyle = "#666666";
-  context.fillRect(10, 8, 38, 24);
-  context.fillRect(58, 8, 60, 24);
-
-  return new THREE.CanvasTexture(canvas);
 }
