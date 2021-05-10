@@ -9,28 +9,6 @@ class Prota {
     //Aspecto del personaje
     this.createProta(scene);
 
-    // var carroceriaGeom = new THREE.BoxGeometry(5.2,1.3,2.5);
-
-    // var colorCarroceria = new THREE.MeshLambertMaterial({color: 0xA52523 });
-
-    // var carroceriaPhy = new Physijs.BoxMesh(
-    //   carroceriaGeom,
-    //   colorCarroceria
-    // );
-
-    // carroceriaPhy.position.y = 7;
-    // carroceriaPhy.castShadow = carroceriaPhy.receiveShadow = true;
-
-    // var vehicle = new Physijs.Vehicle(carroceriaPhy, new Physijs.VehicleTuning(
-    //   10.88,
-    //   1.83,
-    //   0.28,
-    //   500,
-    //   10.5,
-    //   6000
-    // ));
-    // scene.add( vehicle );
-
 
     //Caja fisica del personaje
     var containerGeometry = new THREE.BoxGeometry(3, 7.8, 3);
@@ -287,6 +265,19 @@ class Prota {
       else {
         this.coche.applyEngineForce( 0 );
       }
+    }
+
+    if(this.coche.mesh.getLinearVelocity().x > 20){
+      this.coche.mesh.setLinearVelocity({x: 20, y: this.coche.mesh.getLinearVelocity().y, z:this.coche.mesh.getLinearVelocity().z});
+    }
+    else if(this.coche.mesh.getLinearVelocity().z > 20){
+      this.coche.mesh.setLinearVelocity({x: this.coche.mesh.getLinearVelocity().x , y: this.coche.mesh.getLinearVelocity().y, z:20});
+    }
+    else if(this.coche.mesh.getLinearVelocity().x < -20){
+      this.coche.mesh.setLinearVelocity({x: -20, y: this.coche.mesh.getLinearVelocity().y, z:this.coche.mesh.getLinearVelocity().z});
+    }
+    else if(this.coche.mesh.getLinearVelocity().z < -20){
+      this.coche.mesh.setLinearVelocity({x: this.coche.mesh.getLinearVelocity().x , y: this.coche.mesh.getLinearVelocity().y, z:-20});
     }
 
     //Evitar que el personaje se desestabilice

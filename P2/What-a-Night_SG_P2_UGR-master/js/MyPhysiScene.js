@@ -202,8 +202,9 @@ class MyPhysiScene extends Physijs.Scene {
     this.cameraControl.update();  
 
     //Actualizar los valores de puntuación y de vida
-    this.t_puntuacion.innerHTML = this.puntuacion;
-    this.t_vida.innerHTML = this.prota.vida;
+    this.t_puntuacion.innerHTML = this.prota.coche.mesh.getLinearVelocity().x;
+    // console.log(this.prota.coche.mesh.getLinearVelocity().x);
+    this.t_vida.innerHTML = this.prota.coche.mesh.getLinearVelocity().z;
 
     // //Actualizar los generadores
     // for (var i = 0; i < this.generadores.length; i++) {
@@ -235,12 +236,6 @@ $(function () {
   // listeners
   // Cada vez que el usuario cambie el tamaño de la ventana se llama a la función que actualiza la cámara y el renderer
   window.addEventListener("resize", () => scene.onWindowResize());
-
-  // Se añaden listeners para el teclado y el ratón
-  // window.addEventListener("keydown", () => scene.onKeyDown(event));
-  // window.addEventListener("keyup", () => scene.onKeyUp(event));
-  // window.addEventListener("mousedown", () => scene.disparar(event));
-
   
   window.addEventListener('keydown', function( ev ) {
     switch ( ev.keyCode ) {
@@ -294,5 +289,5 @@ $(function () {
 
   // Finalmente, realizamos el primer renderizado.
   scene.update();
-});
-
+}
+);

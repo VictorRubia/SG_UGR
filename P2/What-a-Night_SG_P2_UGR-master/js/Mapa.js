@@ -7,7 +7,7 @@ class Mapa {
         var materialDark = new THREE.MeshPhongMaterial({ map: texture, color: 0xbfbfbf });
         var physiMaterial = Physijs.createMaterial(material, 1, 0.4);
         var physiMaterialDark = Physijs.createMaterial(materialDark, 0.2, 0.5);
-        var material_transparent = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.5 })
+        var material_transparent = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.01 })
         var physiMaterial_transparent = Physijs.createMaterial(material_transparent, 1, 0.1);
         var material_ = new THREE.MeshBasicMaterial({ color: 0x000000 })
         var physiMaterial_ = Physijs.createMaterial(material_, 1, 0.1);

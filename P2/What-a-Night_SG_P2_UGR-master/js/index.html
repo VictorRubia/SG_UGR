@@ -31,19 +31,21 @@
 </head>
 
 <body>
-    <!-- <audio src="../audio/ayquemematan.mp3" type="audio/mpeg" autoplay>
+    <!-- <audio autoplay loop loopstart="5" loopend="8">
+        <source src="../audio/ayquemematan.ogg">
     </audio> -->
 
+    
     <!-- Div which will hold the Output -->
     <div id="WebGL-output">
     </div>
-
+    
     <div style="position:absolute; left:30px; top:10px" id="izda">
         <p>Vida: <a id="vida"></a></p>
-        <p>Puntuación: <a id="puntuacion">0</a></p>
-        <p>Nivel: <a id="nivel"></a></p>
+        <p>Velocidad X: <a id="puntuacion">0</a></p>
+        <p>Velocidad Z: <a id="nivel"></a></p>
     </div>
-
+    
     <div style="position:absolute; right:30px; top:10px" id="dcha">
         <button id="ayuda">Ayuda</button>
         <script type="text/javascript">
@@ -53,6 +55,17 @@
         }
         </script>
     </div>
+    <script>
+        function audio() {
+            if (document.getElementById("music").currentTime >= 64) {document.getElementById("music").currentTime = 6}
+        }
+    </script>
+
+    <audio autoplay id="music" ontimeupdate="audio()">
+        <source src="../audio/ayquemematan.ogg" type="audio/mp3">
+    <audio>
+
+        
 
 </body>
 
