@@ -68,6 +68,8 @@
 					}
 				}
 
+
+
 				scene.simulate( undefined, 2 );
 				physics_stats.update();
 			}
@@ -251,8 +253,15 @@
 	render = function() {
 		requestAnimationFrame( render );
 		if ( vehicle ) {
-			camera.position.copy( vehicle.mesh.position ).add( new THREE.Vector3( 40, 25, 40 ) );
-			camera.lookAt( vehicle.mesh.position );
+			// camera.position.copy( vehicle.mesh.position ).add( new THREE.Vector3( 40, 25, 40 ) );
+			// camera.lookAt( vehicle.mesh.position );
+
+			var relativeCameraOffset = new THREE.Vector3(40,25,40);
+			var cameraOffset = relativeCameraOffset.applyMatrix4(vehicle.mesh.matrixWorld);
+			camera.position.x = cameraOffset.x;
+			// camera.position.y = cameraOffset.y;
+			camera.position.z = cameraOffset.z;
+			camera.lookAt(vehicle.mesh.position);
 
 			light.target.position.copy( vehicle.mesh.position );
 			light.position.addVectors( light.target.position, new THREE.Vector3( 20, 20, -15 ) );
