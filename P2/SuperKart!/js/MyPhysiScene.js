@@ -11,6 +11,8 @@ class MyPhysiScene extends Physijs.Scene {
     Physijs.scripts.ammo = './ammo.js'
     super();
 
+    this.posiciones;
+
     // Crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
 
@@ -18,7 +20,28 @@ class MyPhysiScene extends Physijs.Scene {
     this.setGravity(new THREE.Vector3(0, -33, 0));
 
     // El personaje principal
-    this.coche = new Coche(this);
+    this.coche = new Coche(this,159,30,0xA52523, false, 0);
+
+    
+    this.enemigo = new Enemigos(this,159,50,0x00FF00, true, 1.02, 1);
+    this.enemigo2 = new Enemigos(this,159,50,0x0000FF, true, 1.04, 2);
+    this.enemigo3 = new Enemigos(this,159,50,0xFFFF00, true, 0.91, 3);
+    
+    this.enemigos = [this.enemigo, this.enemigo2, this.enemigo3]; 
+
+    let arrayCopy = [4, 2 , 3, 1, 5];
+
+    arrayCopy.sort(function(a,b){
+      return b - a;
+      }
+    );
+
+    console.log(arrayCopy[0]);
+    console.log(arrayCopy[1]);
+    console.log(arrayCopy[2]);
+    console.log(arrayCopy[3]);
+    console.log(arrayCopy[4]);
+
 
     // Raycaster que se usará
     this.raycaster = new THREE.Raycaster();
@@ -32,10 +55,17 @@ class MyPhysiScene extends Physijs.Scene {
     // Creamos el mapa 
     this.mapa = new Mapa(this);
 
+
     //Los elementos del html que vamos a ir modificando
     this.primero = document.getElementById('1');
     this.segundo = document.getElementById('2');
     this.tercero = document.getElementById('3');
+    this.cuarto = document.getElementById('4');
+    this.quinto = document.getElementById('5');
+    this.sexto = document.getElementById('6');
+    this.septimo = document.getElementById('7');
+    this.octavo = document.getElementById('8');
+    this.noveno = document.getElementById('9');
 
     var clock = new THREE.Clock();
     var delta = 0;
@@ -126,20 +156,34 @@ class MyPhysiScene extends Physijs.Scene {
     this.delta += this.clock.getDelta();
   
     this.coche.update();
+    this.enemigo.update();
+    this.enemigo2.update();
+    this.enemigo3.update();
     
-    // this.cameraControl.update();  
+    this.cameraControl.update();  
+
     
     //Actualizar los valores de puntuación y de vida
     var velZ = this.coche.coche.mesh.getLinearVelocity().z.toFixed(2);
     var velX = this.coche.coche.mesh.getLinearVelocity().x.toFixed(2);
     
-    var velocidad = Math.sqrt(Math.pow(velZ,2) + Math.pow(velX,2))
-    
-    this.primero.innerHTML = velocidad.toFixed(2);
+    var velocidad = Math.sqrt(Math.pow(velZ,2) + Math.pow(velX,2));
+    if(this.coche.vueltas == -1)
+      this.primero.innerHTML = 0;
+    else
+      this.primero.innerHTML = this.coche.vueltas;
+
+      calcularDistancia(this);
     // this.primero.innerHTML = this.coche.coche.mesh.position.x.toFixed(2);
     // console.log(this.coche.coche.mesh.getLinearVelocity().x);
-    this.segundo.innerHTML = this.camera.position.x;
-    this.tercero.innerHTML = this.camera.position.z;
+    this.segundo.innerHTML = this.coche.coche.mesh.position.x;
+    this.tercero.innerHTML = this.coche.coche.mesh.position.z;
+    this.cuarto.innerHTML = this.coche.seccion;
+    this.quinto.innerHTML = this.enemigos[0].numsecciones;
+    this.sexto.innerHTML = this.coche.distancia;
+    this.septimo.innerHTML = this.enemigos[0].distancia;
+    this.octavo.innerHTML = this.posiciones;
+    this.noveno.innerHTML = this.coche.posicionCuadro;
     
     
     let tacho = 0;
@@ -156,6 +200,7 @@ class MyPhysiScene extends Physijs.Scene {
       draw((velocidad*0.005), tacho, gas, (velocidad).toFixed(2), turnSignalsStates, iconsStates);
     }
     redraw();
+    TWEEN.update();
     
     
     // if (this.delta  > this.interval) {
@@ -176,6 +221,10 @@ class MyPhysiScene extends Physijs.Scene {
 
 }
 
+function juegoTerminado(){
+  window.alert("JUEGO TERMINADO!");
+}
+
 /// La función principal
 $(function () {
 
@@ -190,9 +239,10 @@ $(function () {
     scene.coche.coche.mesh.__dirtyRotation = true;
     scene.coche.coche.mesh.__dirtyPosition = true;
     scene.coche.coche.mesh.rotation['x'] = 0;
-    scene.coche.coche.mesh.position['x'] = 0;
+    scene.coche.coche.mesh.rotation['y'] = Math.PI/2;
+    // scene.coche.coche.mesh.position['x'] = 0;
     scene.coche.coche.mesh.rotation['z'] = 0;
-    scene.coche.coche.mesh.position['z'] = 0;
+    // scene.coche.coche.mesh.position['z'] = 0;
     // scene.coche.coche.mesh.rotation['y'] = 0;
   });
   
@@ -229,6 +279,8 @@ $(function () {
         
         case 87: // forward
         scene.coche.input.power = null;
+        scene.coche.coche.setBrake( 0.5, 2 );
+        scene.coche.coche.setBrake( 0.5, 3 );
         break;
         
         case 68: // right

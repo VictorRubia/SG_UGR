@@ -1,19 +1,20 @@
 class Coche {
   //Necesitamos la escena
-  constructor(scene) {
+  constructor(scene, posx, posz, colorCoche, seccion) {
+    this.posx = posx;
+    this.posz = posz;
+    this.colorCoche = colorCoche;
+    this.index = -1;
+    this.seccion = seccion;
+    this.distancia = 0;
+    this.vueltas = -1;
     this.scene = scene;
+    this.numsecciones = 0;
+    this.posicionCuadro=0;
 
     //Aspecto del personaje
     this.createCoche(scene);
 
-    //Caja fisica del personaje
-    var containerGeometry = new THREE.BoxGeometry(3, 7.8, 3);
-    
-    this.box_container = new Physijs.BoxMesh(
-      containerGeometry,
-      new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.0, transparent: true }),
-      1
-    );
 
     this.input = {
       power: null,
@@ -21,6 +22,48 @@ class Coche {
       steering: 0,
       rear: null
     };
+
+    var that = this
+
+    this.coche.mesh.addEventListener('collision', function (objeto, v, r, n) {
+      // console.log(objeto);
+      if(objeto.id == 86 && that.seccion == 0){
+        that.vueltas++;
+        that.seccion++;
+        that.numsecciones++;
+      }
+
+      if(objeto.id == 87 && that.seccion == 1){
+        that.seccion++;
+        that.numsecciones++;
+
+      }
+      // if(objeto.id == 68 && scene.coche.seccion == 2){
+      //   console.log(objeto);
+      //   scene.coche.seccion++;
+      //   console.log(scene.coche);
+      // }
+      if(objeto.id == 88 && that.seccion == 2){
+        that.seccion++;
+        that.numsecciones++;
+      }
+      if(objeto.id == 89 && that.seccion == 3){
+        that.seccion++;
+        that.numsecciones++;
+      }
+      if(objeto.id == 90 && that.seccion == 4){
+        that.seccion++;
+        that.numsecciones++;
+
+      }
+      if(objeto.id == 89 && that.seccion == 3){
+        that.seccion++;
+        that.vueltas++;
+        that.numsecciones++;
+        
+      }
+    });
+
   }
 
   //Crear el aspecto del personaje
@@ -28,19 +71,20 @@ class Coche {
 
     this.input;
 
-    var colorCarroceria = new THREE.MeshLambertMaterial({color: 0xA52523 });
+    //0xA52523
+    var colorCarroceria = new THREE.MeshLambertMaterial({color: this.colorCoche });
 
     var carroceriaGeom = new THREE.BoxGeometry(5.2,1.3,2.5);
     carroceriaGeom.rotateY(Math.PI / 2);
     this.carroceria = new THREE.Mesh(carroceriaGeom, colorCarroceria);
     
-    var carroceriaPhy = new Physijs.BoxMesh(
+    this.carroceriaPhy = new Physijs.BoxMesh(
       carroceriaGeom,
       colorCarroceria
     );
     
-    carroceriaPhy.position.y = 1.4; //1.3
-    carroceriaPhy.castShadow = carroceriaPhy.receiveShadow = true;
+    this.carroceriaPhy.position.y = 1.4; //1.3
+    this.carroceriaPhy.castShadow = this.carroceriaPhy.receiveShadow = true;
     
     var cabinaGeom = new THREE.BoxGeometry(2.86,1.04,2);
     cabinaGeom.rotateY(Math.PI / 2);
@@ -80,15 +124,15 @@ class Coche {
     
     this.cabina.position.y = 1;
     
-    carroceriaPhy.add(this.ventanaFrontal);
-    carroceriaPhy.add(this.ventanaTrasera);
-    carroceriaPhy.add(this.ventanaDcha1);
-    carroceriaPhy.add(this.ventanaDcha2);
-    carroceriaPhy.add(this.ventanaIzqda1);
-    carroceriaPhy.add(this.ventanaIzqda2);
-    carroceriaPhy.add(this.cabina);
+    this.carroceriaPhy.add(this.ventanaFrontal);
+    this.carroceriaPhy.add(this.ventanaTrasera);
+    this.carroceriaPhy.add(this.ventanaDcha1);
+    this.carroceriaPhy.add(this.ventanaDcha2);
+    this.carroceriaPhy.add(this.ventanaIzqda1);
+    this.carroceriaPhy.add(this.ventanaIzqda2);
+    this.carroceriaPhy.add(this.cabina);
     
-    this.coche = new Physijs.Vehicle(carroceriaPhy, new Physijs.VehicleTuning(
+    this.coche = new Physijs.Vehicle(this.carroceriaPhy, new Physijs.VehicleTuning(
       10,//10.88,//stiffness
       1.83,//1.83,   //compression
       0.28,//0.28, //travel
@@ -97,59 +141,44 @@ class Coche {
       6000
       )
     );
-      
-      this.coche.mesh.position.x =79.59;
-      this.coche.mesh.position.z =16.88;
-      this.coche.mesh.rotation.y =-Math.PI;
-
-    scene.add(this.coche);
+      //x =190 z= 80
+      this.coche.mesh.position.x = this.posx;
+      this.coche.mesh.position.z = this.posz;
+      this.coche.mesh.rotation.y = -Math.PI;
 
     var ruedaGeom = new THREE.CylinderGeometry( 0.5, 0.5, 1, 8 );
     // ruedaGeom.rotateX(-Math.PI / 2);
     ruedaGeom.rotateZ(-Math.PI / 2);
     // var ruedaGeom = new THREE.CircleGeometry( 10, 5 );
-    var materialRueda = new THREE.MeshLambertMaterial({ color: 0x333333 });
-
-    for ( var i = 0; i < 4; i++ ) {
-      this.coche.addWheel(
-        ruedaGeom,
-        materialRueda,
-        new THREE.Vector3(
+      var materialRueda = new THREE.MeshLambertMaterial({ color: 0x333333 });
+      // console.log(this.coche);
+      scene.add(this.coche);
+      for ( var i = 0; i < 4; i++ ) {
+        this.coche.addWheel(
+          ruedaGeom,
+          materialRueda,
+          new THREE.Vector3(
             i % 2 === 0 ? -1.3 : 1.3, 
             -0.3, // Altura ruedas
             i < 2 ? 1.5 : -1.5    // Como de separadas estan las ruedas
-        ),
-        new THREE.Vector3( 0, -1, 0 ),  // Ruedas motrices
-        new THREE.Vector3( -1, 0, 0 ),
-        0.75, // Altura coche respecto a ruedas
-        0.5,
-        i < 2 ? false : true
-      );
-    }	
-
-      this.ruedaDelante = this.fabricaRuedas();
-      this.ruedaDelante.position.y = 6.5;
-      this.ruedaDelante.position.x = 1.5;
-      // coche.add(this.ruedaDelante);
-  
-      this.ruedaAtras = this.fabricaRuedas();
-      this.ruedaAtras.position.y = 6.5;
-      this.ruedaAtras.position.x = -1.5;
-      // this.ruedaDelante.add(this.ruedaAtras);
-      
+            ),
+            new THREE.Vector3( 0, -1, 0 ),  // Ruedas motrices
+            new THREE.Vector3( -1, 0, 0 ),
+            0.75, // Altura coche respecto a ruedas
+            0.5,
+            i < 2 ? false : true
+            );
+      }	
+        
     }
-
-  fabricaRuedas(){
-    var ruedaGeom = new THREE.CylinderGeometry( 0.5, 0.5, 1, 8 );
-    ruedaGeom.rotateX(Math.PI / 2);
-    var materialRueda = new THREE.MeshLambertMaterial({ color: 0x333333 });
-
-    var rueda = new THREE.Mesh(ruedaGeom, materialRueda);
-    return rueda;
-  }
 
   //Metodo que actualiza
   update() {
+
+    var velZ = this.coche.mesh.getLinearVelocity().z.toFixed(2);
+    var velX = this.coche.mesh.getLinearVelocity().x.toFixed(2);
+    
+    var velocidad = Math.sqrt(Math.pow(velZ,2) + Math.pow(velX,2));
 
     //  Controlamos motor del coche
     if ( this.input && this.coche ) {
@@ -176,6 +205,8 @@ class Coche {
         this.coche.setBrake( 2, 3 );
       } 
       else {
+        // this.coche.setBrake( 1, 2 );
+        // this.coche.setBrake( 1, 3 );
         this.coche.applyEngineForce( 0 );
       }
     }
