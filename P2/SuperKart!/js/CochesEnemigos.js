@@ -13,6 +13,11 @@ class Enemigos {
       this.numsecciones = 0;
       this.scene = scene;
       this.posicionCuadro=0;
+      this.spline;
+      this.prueba = true;
+
+      // 17 posiciones
+      this.setNumeros = [0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1, 1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07];
   
       //Aspecto del personaje
     	this.createCoche(scene);
@@ -26,6 +31,7 @@ class Enemigos {
 				new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.0, transparent: true }),
 				1
 			);
+      console.log(this.index);
 
 
 			this.box_container.add(this.meshCocheEnemigo);
@@ -33,27 +39,82 @@ class Enemigos {
 			this.box_container.position.set(this.posx, 0, this.posz);
 			this.box_container.__dirtyPosition = true;
 
-      //Recorrido para los competidores
-      this.spline = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(166.9*this.factor,0.5,32.38*this.factor),
-        new THREE.Vector3(166.9*this.factor,0.5,17.62*this.factor),	
-        new THREE.Vector3(166.9*this.factor,0.5,15.02*this.factor),	
-        new THREE.Vector3(158.7*this.factor,0.5,-45.21*this.factor),
-        new THREE.Vector3(133.75*this.factor,0.5,-59.21*this.factor),
-        new THREE.Vector3(-69.33*this.factor,0.5,-161.38*this.factor),
-        new THREE.Vector3(-140.75*this.factor,0.5,-172.27*this.factor),	
-        new THREE.Vector3(-168.88*this.factor,0.5,-127.26*this.factor),
-        new THREE.Vector3(-169.56*this.factor,0.5,47.71*this.factor),
-        new THREE.Vector3(-158.82*this.factor,0.5,89.03*this.factor),
-        new THREE.Vector3(-124.4*this.factor,0.5,82.57*this.factor),
-        new THREE.Vector3(-29.75*this.factor,0.5,34.38*this.factor),
-        new THREE.Vector3(7.51*this.factor,0.5,28.55*this.factor), 	
-        new THREE.Vector3(29.74*this.factor,0.5,56.14*this.factor),	
-        new THREE.Vector3(70.5*this.factor,0.5,141.95*this.factor),	
-        new THREE.Vector3(124.28*this.factor,0.5,160.02*this.factor),
-        new THREE.Vector3(168.47*this.factor,0.5,130.49*this.factor),
-        new THREE.Vector3(166.9*this.factor,0.5,32.38*this.factor),
+      if(this.index === 2){
+        this.spline = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(159.37,0.5,48.83),
+          new THREE.Vector3(166.9,0.5,17.62),	
+          new THREE.Vector3(158.7 ,0.5,-45.21),
+          new THREE.Vector3(133.75,0.5,-59.21),
+          new THREE.Vector3(-69.33,0.5,-161.38),
+          new THREE.Vector3(-140.75,0.5,-172.27),	
+          new THREE.Vector3(-168.88,0.5,-127.26),
+          new THREE.Vector3(-169.56,0.5,47.71),
+          new THREE.Vector3(-158.82,0.5,89.03),
+          new THREE.Vector3(-124.4,0.5,82.57),
+          new THREE.Vector3(-79.17*this.setNumeros[getRandom()],0.5,51.44*this.setNumeros[getRandom()]*1.4),
+          new THREE.Vector3(-36.07*this.setNumeros[getRandom()],0.5,39.05*this.setNumeros[getRandom()]*1.4),
+          new THREE.Vector3(-29.75,0.5,34.38*this.setNumeros[getRandom()]),
+          new THREE.Vector3(7.51*this.setNumeros[getRandom()],0.5,28.55*this.setNumeros[getRandom()]), 	
+          new THREE.Vector3(29.74*this.setNumeros[getRandom()],0.5,56.14 ),	
+          new THREE.Vector3(70.5,0.5,141.95*this.setNumeros[getRandom()]),	
+          new THREE.Vector3(124.28,0.5,160.02),
+          new THREE.Vector3(168.47,0.5,130.49),
+          new THREE.Vector3(159.37,0.5,48.83),
         ]);
+      }
+      if(this.index === 1){
+        console.log("ENTRO");
+        //Recorrido para los competidores
+        this.spline = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(171.65,0.5,39.19),
+          new THREE.Vector3(166.9*this.setNumeros[getRandom()],0.5,17.62),	
+          new THREE.Vector3(158.7 *this.setNumeros[getRandom()],0.5,-45.21*this.setNumeros[getRandom()]),
+          new THREE.Vector3(133.75*this.setNumeros[getRandom()],0.5,-59.21*this.setNumeros[getRandom()]),
+          new THREE.Vector3(29.3*this.setNumeros[getRandom()],0.5,-104.34*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-69.33*this.setNumeros[getRandom()],0.5,-161.38*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-140.75*this.setNumeros[getRandom()],0.5,-172.27*this.setNumeros[getRandom()]),	
+          new THREE.Vector3(-168.88*this.setNumeros[getRandom()],0.5,-127.26*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-169.56*this.setNumeros[getRandom()],0.5,47.71*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-158.82*this.setNumeros[getRandom()],0.5,89.03*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-124.4*this.setNumeros[getRandom()],0.5,82.57*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-83.17*this.setNumeros[getRandom()],0.5,51.44*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-36.07*this.setNumeros[getRandom()],0.5,39.05*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-29.75,0.5,34.38),
+          new THREE.Vector3(-8.17,0.5,17.46),
+          new THREE.Vector3(7.51*this.setNumeros[getRandom()] ,0.5,28.55*this.setNumeros[getRandom()]), 	
+          new THREE.Vector3(29.74*this.setNumeros[getRandom()] ,0.5,56.14*this.setNumeros[getRandom()]),	
+          new THREE.Vector3(70.5*this.setNumeros[getRandom()],0.5,141.95*this.setNumeros[getRandom()]),	
+          new THREE.Vector3(124.28*this.setNumeros[getRandom()],0.5,160.02*this.setNumeros[getRandom()]),
+          new THREE.Vector3(168.47*this.setNumeros[getRandom()],0.5,130.49*this.setNumeros[getRandom()]),
+          new THREE.Vector3(171.65,0.5,39.19),
+        ]);
+      }
+      if(this.index === 3){
+        console.log("ENTRO");
+        //Recorrido para los competidores
+        this.spline = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(171.97,0.5,58.19),
+          new THREE.Vector3(166.9*this.setNumeros[getRandom()],0.5,17.62*this.setNumeros[getRandom()]),	
+          new THREE.Vector3(158.7 *this.setNumeros[getRandom()],0.5,-45.21*this.setNumeros[getRandom()]),
+          new THREE.Vector3(133.75*this.setNumeros[getRandom()],0.5,-59.21*this.setNumeros[getRandom()]),
+          new THREE.Vector3(46.37*this.setNumeros[getRandom()],0.5,-92.21*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-69.33*this.setNumeros[getRandom()],0.5,-161.38*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-140.75*this.setNumeros[getRandom()],0.5,-172.27*this.setNumeros[getRandom()]),	
+          new THREE.Vector3(-168.88*this.setNumeros[getRandom()],0.5,-127.26*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-169.56*this.setNumeros[getRandom()],0.5,47.71*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-158.82*this.setNumeros[getRandom()],0.5,89.03*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-124.4*this.setNumeros[getRandom()],0.5,82.57*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-75.52*this.setNumeros[getRandom()],0.5,51.44*this.setNumeros[getRandom()]),
+          new THREE.Vector3(-36.07*this.setNumeros[getRandom()],0.5,39.05),
+          new THREE.Vector3(-29.75,0.5,34.38*this.setNumeros[getRandom()]),
+          new THREE.Vector3(7.51*this.setNumeros[getRandom()],0.5,28.55*this.setNumeros[getRandom()]), 	// CURVA ABAJO
+          new THREE.Vector3(29.74*this.setNumeros[getRandom()],0.5,56.14*this.setNumeros[getRandom()]),	
+          new THREE.Vector3(70.5*this.setNumeros[getRandom()],0.5,141.95*this.setNumeros[getRandom()]),	
+          new THREE.Vector3(124.28*this.setNumeros[getRandom()],0.5,160.02*this.setNumeros[getRandom()]),
+          new THREE.Vector3(168.47*this.setNumeros[getRandom()],0.5,130.49*this.setNumeros[getRandom()]),
+          new THREE.Vector3(171.97,0.5,58.19),
+          ]);
+      }
 
         this.geometryLine = new THREE.Geometry();
         this.geometryLine.vertices = this.spline.getPoints(100);
@@ -67,9 +128,13 @@ class Enemigos {
         this.box_container.addEventListener('collision', function (objeto, v, r, n) {
           //Si el objeto es un zombie
 
-            if(objeto.id == 86){
+            if(objeto.id == 85){
               that.seccion++; 
               that.vueltas++; 
+              that.numsecciones++;
+            }
+            if(objeto.id == 86){
+              that.seccion++;  
               that.numsecciones++;
             }
             if(objeto.id == 87){
@@ -81,10 +146,6 @@ class Enemigos {
               that.numsecciones++;
             }
             if(objeto.id == 89){
-              that.seccion++;  
-              that.numsecciones++;
-            }
-            if(objeto.id == 90){
               that.seccion++; 
               that.numsecciones++;
               // that.seccion = 0;
@@ -173,45 +234,63 @@ class Enemigos {
 			var that = objeto;
 
 			var animacion2 = new TWEEN.Tween(origen2)
-			.to(destino2, 10000 * getRandomArbitrary(0.3, 1.3)) // ( 6 segundos)
+			.to(destino2, 16000 * getRandomArbitrary(0.8, 1.2)) // ( 6 segundos)
 			.easing(TWEEN.Easing.Linear.None)
 			.onUpdate(function(){
 				var posicion = spline.getPointAt(origen2.p);
-					that.position.copy(posicion);
-          that.__dirtyPosition = true;
-					var tangente = spline.getTangentAt(origen2.p);
-					posicion.add(tangente);
-          // this.meshCocheEnemigo.lookAt(posicion);
-					mesh.lookAt(posicion);
-          that.children[0].lookAt(posicion);
-          that.__dirtyRotation = true;
+        that.position.copy(posicion);
+        that.__dirtyPosition = true;
+        var tangente = spline.getTangentAt(origen2.p);
+        posicion.add(tangente);
+        // this.meshCocheEnemigo.lookAt(posicion);
+        mesh.lookAt(posicion);
+        that.children[0].lookAt(posicion);
+        that.__dirtyRotation = true;
 				})
-				.onComplete(function(){animacion1.start()})
+				.onComplete(function(){animacion4.start()})
 				
     
-          var origen3 = {p: 0.02}; // Desde el principio hasta la mitad del recorrido (4 segs)
-          var destino3 = {p:0.45}; 
-          var animacion3 = new TWEEN.Tween(origen3)
-          .to(destino3, 10000 * getRandomArbitrary(0.3, 1.3))
-          .easing(TWEEN.Easing.Linear.None)
-          .onUpdate(function(){
-            var posicion = spline.getPointAt(origen3.p);
-            that.position.copy(posicion);
-            that.__dirtyPosition = true;
-            var tangente = spline.getTangentAt(origen3.p);
-            posicion.add(tangente);
-            // this.meshCocheEnemigo.lookAt(posicion);
-            that.children[0].lookAt(posicion);
-            mesh.lookAt(posicion);
-            that.__dirtyRotation = true;
+        var origen3 = {p: 0.02}; // Desde el principio hasta la mitad del recorrido (4 segs)
+        var destino3 = {p:0.45}; 
+        var animacion3 = new TWEEN.Tween(origen3)
+        .to(destino3, 18000 * getRandomArbitrary(0.8, 1.2))
+        .easing(TWEEN.Easing.Linear.None)
+        .onUpdate(function(){
+          var posicion = spline.getPointAt(origen3.p);
+          that.position.copy(posicion);
+          that.__dirtyPosition = true;
+          var tangente = spline.getTangentAt(origen3.p);
+          posicion.add(tangente);
+          // this.meshCocheEnemigo.lookAt(posicion);
+          that.children[0].lookAt(posicion);
+          mesh.lookAt(posicion);
+          that.__dirtyRotation = true;
         })
         .onComplete(function(){animacion2.start()}) // BUCLE INFINITO
+
+        var origen4 = {p: 0.0}; // Desde el principio hasta la mitad del recorrido (4 segs)
+        var destino4 = {p:0.02}; 
+        var animacion4 = new TWEEN.Tween(origen4)
+        .to(destino4, 1000)
+        .easing(TWEEN.Easing.Linear.None)
+        .onUpdate(function(){
+          var posicion = spline.getPointAt(origen4.p);
+          that.position.copy(posicion);
+          that.__dirtyPosition = true;
+          var tangente = spline.getTangentAt(origen4.p);
+          posicion.add(tangente);
+          // this.meshCocheEnemigo.lookAt(posicion);
+          that.children[0].lookAt(posicion);
+          mesh.lookAt(posicion);
+          that.__dirtyRotation = true;
+        })
+        .onComplete(function(){animacion3.start()}) // BUCLE INFINITO
 				
 				var origen1 = {p: 0.0}; // Desde el principio hasta la mitad del recorrido (4 segs)
 				var destino1 = {p:0.02}; 
 				var animacion1 = new TWEEN.Tween(origen1)
-				.to(destino1, 2000 * getRandomArbitrary(0.3, 1.3))
-        .easing(TWEEN.Easing.Linear.None)
+				.to(destino1, 3000 * getRandomArbitrary(0.8, 1))
+        .easing(TWEEN.Easing.Exponential.In)
         .onUpdate(function(){
           var posicion = spline.getPointAt(origen1.p);
 					that.position.copy(posicion);
@@ -223,6 +302,7 @@ class Enemigos {
 					mesh.lookAt(posicion);
           that.__dirtyRotation = true;
 			})
+      .delay(4000)
 			.onComplete(function(){animacion3.start()}) // BUCLE INFINITO
 			.start();
 	}
@@ -245,6 +325,23 @@ class Enemigos {
 			this.box_container.rotation['z'] = 0;
 			this.box_container.rotation['y'] = 0;
 			this.box_container.__dirtyRotation = true;
+
+      if(this.vueltas == 2 && this.posicionCuadro == 3){
+
+        var target = document.getElementById('tabla');
+        target.style.display = 'block';
+  
+        if(this.prueba){
+          this.scene.finalizado = false;
+          console.log("JUEGO FINALIZADO");
+        }
+        
+      }
+
+      // if(this.vueltas == 2 && this.posicionCuadro == 3){
+      //   window.alert('Juego finalizado!\n Has quedado último :(');
+      // }
+
       //  Limitamos la velocidad
       // if(this.coche.mesh.getLinearVelocity().x > 20){
       //   this.coche.mesh.setLinearVelocity({x: 20, y: this.coche.mesh.getLinearVelocity().y, z:this.coche.mesh.getLinearVelocity().z});
@@ -301,4 +398,8 @@ function getCarSideTexture() {
 // Retorna un número aleatorio entre min (incluido) y max (excluido)
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
+}
+
+function getRandom(){
+  return Math.floor(Math.random() * 16); 
 }

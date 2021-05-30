@@ -13,10 +13,10 @@ class MiObjeto extends THREE.Object3D {
         var objectLoader = new OBJLOADER.OBJLoader();
 
         // Cada funcion load('archivo', function(materials/object))
-        materialLoader.load('../models/porsche911/911.mtl',
+        materialLoader.load('../models/porsche911/Coin.mtl',
             function (materials) {
                 objectLoader.setMaterials (materials);
-                objectLoader.load('../models/porsche911/Porsche_911_GT2.obj',
+                objectLoader.load('../models/porsche911/Coin.obj',
                     function(object){
                         var modelo = object;
                         that.add(modelo);

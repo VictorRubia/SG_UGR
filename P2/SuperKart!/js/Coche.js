@@ -12,6 +12,8 @@ class Coche {
     this.numsecciones = 0;
     this.posicionCuadro=0;
 
+    this.prueba = true;
+
     //Aspecto del personaje
     this.createCoche(scene);
 
@@ -27,13 +29,13 @@ class Coche {
 
     this.coche.mesh.addEventListener('collision', function (objeto, v, r, n) {
       // console.log(objeto);
-      if(objeto.id == 86 && that.seccion == 0){
+      if(objeto.id == 85 && that.seccion == 0){
         that.vueltas++;
         that.seccion++;
         that.numsecciones++;
       }
 
-      if(objeto.id == 87 && that.seccion == 1){
+      if(objeto.id == 86 && that.seccion == 1){
         that.seccion++;
         that.numsecciones++;
 
@@ -43,25 +45,20 @@ class Coche {
       //   scene.coche.seccion++;
       //   console.log(scene.coche);
       // }
-      if(objeto.id == 88 && that.seccion == 2){
+      if(objeto.id == 87 && that.seccion == 2){
         that.seccion++;
         that.numsecciones++;
       }
-      if(objeto.id == 89 && that.seccion == 3){
+      if(objeto.id == 88 && that.seccion == 3){
         that.seccion++;
         that.numsecciones++;
       }
-      if(objeto.id == 90 && that.seccion == 4){
+      if(objeto.id == 89 && that.seccion == 4){
         that.seccion++;
         that.numsecciones++;
 
       }
-      if(objeto.id == 89 && that.seccion == 3){
-        that.seccion++;
-        that.vueltas++;
-        that.numsecciones++;
-        
-      }
+      
     });
 
   }
@@ -211,19 +208,32 @@ class Coche {
       }
     }
 
+    
+    if(this.vueltas == 2){
+
+      var target = document.getElementById('tabla');
+      target.style.display = 'block';
+
+      if(this.prueba){
+        this.scene.finalizado = false;
+        console.log("JUEGO FINALIZADO");
+      }
+      
+    }
+
     //  Limitamos la velocidad
-    // if(this.coche.mesh.getLinearVelocity().x > 20){
-    //   this.coche.mesh.setLinearVelocity({x: 20, y: this.coche.mesh.getLinearVelocity().y, z:this.coche.mesh.getLinearVelocity().z});
-    // }
-    // else if(this.coche.mesh.getLinearVelocity().z > 20){
-    //   this.coche.mesh.setLinearVelocity({x: this.coche.mesh.getLinearVelocity().x , y: this.coche.mesh.getLinearVelocity().y, z:20});
-    // }
-    // else if(this.coche.mesh.getLinearVelocity().x < -20){
-    //   this.coche.mesh.setLinearVelocity({x: -20, y: this.coche.mesh.getLinearVelocity().y, z:this.coche.mesh.getLinearVelocity().z});
-    // }
-    // else if(this.coche.mesh.getLinearVelocity().z < -20){
-    //   this.coche.mesh.setLinearVelocity({x: this.coche.mesh.getLinearVelocity().x , y: this.coche.mesh.getLinearVelocity().y, z:-20});
-    // }
+    if(this.coche.mesh.getLinearVelocity().x > 50){
+      this.coche.mesh.setLinearVelocity({x: 50, y: this.coche.mesh.getLinearVelocity().y, z:this.coche.mesh.getLinearVelocity().z});
+    }
+    else if(this.coche.mesh.getLinearVelocity().z > 50){
+      this.coche.mesh.setLinearVelocity({x: this.coche.mesh.getLinearVelocity().x , y: this.coche.mesh.getLinearVelocity().y, z:50});
+    }
+    else if(this.coche.mesh.getLinearVelocity().x < -50){
+      this.coche.mesh.setLinearVelocity({x: -50, y: this.coche.mesh.getLinearVelocity().y, z:this.coche.mesh.getLinearVelocity().z});
+    }
+    else if(this.coche.mesh.getLinearVelocity().z < -50){
+      this.coche.mesh.setLinearVelocity({x: this.coche.mesh.getLinearVelocity().x , y: this.coche.mesh.getLinearVelocity().y, z:-50});
+    }
 
     //  rotacion sucia a 0
     // modulo de vel lineal x y z es velocidad
