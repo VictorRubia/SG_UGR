@@ -10,7 +10,8 @@ class Coche {
     this.vueltas = -1;
     this.scene = scene;
     this.numsecciones = 0;
-    this.posicionCuadro=0;
+    this.posicionCuadro = 0;
+    this.monedas = 0;
 
     this.prueba = true;
 
@@ -29,13 +30,13 @@ class Coche {
 
     this.coche.mesh.addEventListener('collision', function (objeto, v, r, n) {
       // console.log(objeto);
-      if(objeto.id == 85 && that.seccion == 0){
+      if(objeto.id == 95 && that.seccion == 0){
         that.vueltas++;
         that.seccion++;
         that.numsecciones++;
       }
 
-      if(objeto.id == 86 && that.seccion == 1){
+      if(objeto.id == 96 && that.seccion == 1){
         that.seccion++;
         that.numsecciones++;
 
@@ -45,18 +46,17 @@ class Coche {
       //   scene.coche.seccion++;
       //   console.log(scene.coche);
       // }
-      if(objeto.id == 87 && that.seccion == 2){
+      if(objeto.id == 97 && that.seccion == 2){
         that.seccion++;
         that.numsecciones++;
       }
-      if(objeto.id == 88 && that.seccion == 3){
+      if(objeto.id == 98 && that.seccion == 3){
         that.seccion++;
         that.numsecciones++;
       }
-      if(objeto.id == 89 && that.seccion == 4){
+      if(objeto.id == 99 && that.seccion == 4){
         that.seccion++;
         that.numsecciones++;
-
       }
       
     });

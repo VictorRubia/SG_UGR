@@ -24,14 +24,23 @@ class MyPhysiScene extends Physijs.Scene {
     // El personaje principal
     this.coche = new Coche(this,159,30,0xA52523, false, 0);
 
+    
     getRandomArbitrary(0.91, 1.04)
     this.enemigo = new Enemigos(this,171.65,39.19,0x00FF00, true,getRandomArbitrary(0.91, 1.07), 1);
     this.enemigo2 = new Enemigos(this,159.37,48.83,0x0000FF, true,getRandomArbitrary(0.91, 1.07), 2);
     this.enemigo3 = new Enemigos(this,171.97,58.19,0xFFFF00, true,getRandomArbitrary(0.91, 1.07), 3);
     
+    console.log(this.enemigo);
+    console.log(this.enemigo2);
+    console.log(this.enemigo3);
     this.enemigos = [this.enemigo, this.enemigo2, this.enemigo3]; 
 
-    // this.moneda = new Moneda(this, 123,123,1);
+    this.moneda2 = new Moneda(this, 31.53,-100.82,2);
+    this.moneda3 = new Moneda(this, -53.14,-148.79,3);
+    this.moneda5 = new Moneda(this, -164.55,8.13,5);
+    this.moneda7 = new Moneda(this, 90.40,151.96,7);
+    this.moneda8 = new Moneda(this, 165.17,112.24,8);
+
 
     // Raycaster que se usará
     this.raycaster = new THREE.Raycaster();
@@ -151,6 +160,14 @@ class MyPhysiScene extends Physijs.Scene {
     this.enemigo.update();
     this.enemigo2.update();
     this.enemigo3.update();
+    // this.moneda.update();
+    this.moneda2.update();
+    this.moneda3.update();
+    // this.moneda4.update();
+    this.moneda5.update();
+    // this.moneda6.update();
+    this.moneda7.update();
+    this.moneda8.update();
     
     this.cameraControl.update();  
 
@@ -240,7 +257,7 @@ $(function () {
           scene.coche.input.direction = -1;
           break;
           
-          case 32: // brake
+          case 66: // brake 32
           scene.coche.input.power = false;
           break;
           
@@ -267,7 +284,7 @@ $(function () {
           scene.coche.input.direction = null;
           break;
           
-          case 32: // brake
+          case 66: // brake
           scene.coche.input.power = null;
           break;
           

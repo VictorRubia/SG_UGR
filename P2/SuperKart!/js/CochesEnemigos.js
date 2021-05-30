@@ -15,6 +15,7 @@ class Enemigos {
       this.posicionCuadro=0;
       this.spline;
       this.prueba = true;
+      this.monedas = 0;
 
       // 17 posiciones
       this.setNumeros = [0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1, 1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07];
@@ -31,8 +32,6 @@ class Enemigos {
 				new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.0, transparent: true }),
 				1
 			);
-      console.log(this.index);
-
 
 			this.box_container.add(this.meshCocheEnemigo);
 
@@ -63,7 +62,6 @@ class Enemigos {
         ]);
       }
       if(this.index === 1){
-        console.log("ENTRO");
         //Recorrido para los competidores
         this.spline = new THREE.CatmullRomCurve3([
           new THREE.Vector3(171.65,0.5,39.19),
@@ -90,7 +88,6 @@ class Enemigos {
         ]);
       }
       if(this.index === 3){
-        console.log("ENTRO");
         //Recorrido para los competidores
         this.spline = new THREE.CatmullRomCurve3([
           new THREE.Vector3(171.97,0.5,58.19),
@@ -128,24 +125,24 @@ class Enemigos {
         this.box_container.addEventListener('collision', function (objeto, v, r, n) {
           //Si el objeto es un zombie
 
-            if(objeto.id == 85){
+            if(objeto.id == 95){
               that.seccion++; 
               that.vueltas++; 
               that.numsecciones++;
             }
-            if(objeto.id == 86){
+            if(objeto.id == 96){
               that.seccion++;  
               that.numsecciones++;
             }
-            if(objeto.id == 87){
+            if(objeto.id == 97){
               that.seccion++;  
               that.numsecciones++;
             }
-            if(objeto.id == 88){
+            if(objeto.id == 98){
               that.seccion++;  
               that.numsecciones++;
             }
-            if(objeto.id == 89){
+            if(objeto.id == 99){
               that.seccion++; 
               that.numsecciones++;
               // that.seccion = 0;

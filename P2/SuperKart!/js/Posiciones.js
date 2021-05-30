@@ -150,12 +150,15 @@ function calcularPosicion(scene){
     // </div>
 
     var primero = array[0].index.toString();
+    var primeroMonedas = array[0].monedas.toString();
     var segundo = array[1].index.toString();
+    var segundoMonedas = array[1].monedas.toString();
     var tercero = array[2].index.toString();
+    var terceroMonedas = array[2].monedas.toString();
     var cuarto = array[3].index.toString();
+    var cuartoMonedas = array[3].monedas.toString();
 
     if(primero.includes("-1")){
-        console.log('TUU');
         primero = primero.replace('-1', 'Tú');
     }
     else if(primero.includes("1")){
@@ -217,19 +220,19 @@ function calcularPosicion(scene){
     html.push('<ol>');
     html.push('<li>');
     html.push('<mark>'+ primero +'</mark>');
-    html.push('<small></small>');
+    html.push('<small>'+ primeroMonedas +'</small>');
     html.push('</li>');
     html.push('<li>');
     html.push('<mark>'+ segundo +'</mark>');
-    html.push('<small></small>');
+    html.push('<small>'+ segundoMonedas +'</small>');
     html.push('</li>');
     html.push('<li>');
     html.push('<mark>' + tercero +'</mark>');
-    html.push('<small></small>');
+    html.push('<small>'+ terceroMonedas +'</small>');
     html.push('</li>');
     html.push('<li>');
     html.push('<mark>'+ cuarto +'</mark>');
-    html.push('<small></small>');
+    html.push('<small>'+ cuartoMonedas +'</small>');
     html.push('</li>');
     html.push('</ol>');
     html.push('</div>');
